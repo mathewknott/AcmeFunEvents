@@ -1,0 +1,65 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@model AcmeFunEvents.Web.Models.ActivityViewModels.ActivityCreateViewModel
+@inject IAuthorizationService AuthorizationService
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = "Create an Activity";
+    ViewBag.Section = "Admin";
+}
+@section Scripts{
+    <script>
+        var onSuccess = function (data, status, xhr) {
+            if (data === "success") {
+                window.location.href = '/activity';
+            } else if (data.success === "fail") {
+                $("#Form").addClass("has-error");
+                for (var i = 0; JSON.parse(data.errorList).length > i; i += 1) {
+                    $("#responseMessage").append(JSON.parse(data.errorList)[i].Errors[0].ErrorMessage + "</br>");
+                }
+            }
+        };
+    </script>
+}
+<div class="row">
+    <div class="col-md-12">
+        <h3>@ViewBag.Title</h3>
+        <p><a href="/activity">Activity List</a></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 ">
+        <form asp-controller="Activity" asp-action="Create" 
+              data-ajax="true" 
+              data-ajax-method="POST" 
+              data-ajax-mode="Replace" 
+              data-ajax-update="#responseMessage" 
+              data-ajax-loading="loading" 
+              data-ajax-success="onSuccess(data, status, xhr)">
+            <div class="form-horizontal" data-toggle="validator">
+                <div id="loading">
+                    <img src="/images/loading.gif" alt="" />
+                </div>
+                <div class="control-group" id="activitiesForm">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label asp-for="Date" class="control-label"></label>
+                            <input asp-for="Date" class="form-control" />
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="controls margintop15">
+                        <div class="col-mdform-control-12">
+                            <input type="submit" name="button" id="SendBtn" value="@Localizer["Submit"]" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

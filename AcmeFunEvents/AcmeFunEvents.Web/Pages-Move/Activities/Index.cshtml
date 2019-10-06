@@ -1,0 +1,82 @@
+﻿@page "{handler?}"
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IndexModel
+@{
+    ViewData["Title"] = "Activities";
+    ViewData["Section"] = "Admin";
+}
+@section Scripts{
+    <script>
+        var ResponseHandler = function(res) {return res;}
+        var TableActions = function(value, row, index) {
+            return [
+                '<a href="/activity/update/?activityId=' + row.id + '" title="Users"><i class="glyphicon glyphicon-user"></i></a> ',
+                '<a href="/activity/update/?activityId=' + row.id + '" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a> ',
+                '<a class="danger remove" href="#" data-id="' + row.id + '" data-toggle="modal" data-target=".deleteModal" title="Delete">',
+                '<i class="glyphicon glyphicon-trash"></i>',
+                '</a>'
+            ].join('');
+        }
+        $('.deleteModal').on('show.bs.modal',
+            function (event) {
+                $(this).find('#Id').val($(event.relatedTarget).data('id'));
+            }
+        );
+    </script>
+}
+<div class="row">
+    <div class="col-md-12">
+        <h3>@ViewBag.Title</h3>
+        <p><a href="/activity/create">Create an activity</a></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Activities Created</h3>
+        <table id="activitiesTable"
+               data-toolbar="#toolbar"
+               data-toggle="table"
+               data-search="true"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-export="true"
+               data-detail-view="false"
+               data-minimum-count-columns="1"
+               data-id-field="id"
+               data-show-footer="false"
+               data-pagination="true"
+               data-page-size="9"
+               data-page-list="[10, 25, 50, 100, ALL]"
+               data-side-pagination="server"
+               data-url="/activity/GetActivities"
+               data-response-handler="ResponseHandler">
+            <thead>
+                <tr>
+                    <th data-field="code" data-sortable="true">Code</th>
+                    <th data-field="name" data-sortable="true">Name</th>
+                    <th data-field="date" data-sortable="true">Date</th>
+                    <th data-formatter="TableActions">Action</th>
+                </tr>
+            </thead>
+        </table>
+        <p>Reference: <a asp-controller="Activity" asp-action="GetActivities" asp-route-items="200">@Localizer["Activities Json"]</a></p>
+    </div>
+</div>
+<div class="modal fade deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form asp-page="Activity" asp-route="Delete">
+                    <input type="hidden" id="Id" name="Id" />
+                    <p>Are you sure you want to delete this activity?</p>
+                    <button class="btn btn-danger" asp-page-handler="delete">Delete</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

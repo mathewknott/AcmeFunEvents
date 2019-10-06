@@ -1,0 +1,52 @@
+﻿@model AcmeFunEvents.Web.Models.Page.BasePageViewModel
+@{
+    ViewBag.Title = "Admin";
+    ViewBag.Section = "Admin";
+}
+@section Scripts{
+    <script>
+        var onBegin = function(data, status, xhr) {
+            $("#responseMessage").empty();
+        };
+
+        var onReseedSuccess = function (data, status, xhr) {
+            console.log(data);
+            $("#responseMessage").removeClass('error');
+            $("#responseMessage").empty();
+            if (data === 'success') {
+                $("#responseMessage").text("Thank you....");
+                $("#resetForm").removeClass('has-error').hide();
+            } else if (data.success === "fail") {
+                $("#resetForm").addClass('has-error');
+                for (var i = 0; JSON.parse(data.errorList).length > i; i += 1) {
+                    $("#responseMessage").append(JSON.parse(data.errorList)[i].Errors[0].ErrorMessage + "</br>");
+                }
+            }
+        };
+    </script>
+}
+<div class="row">
+    <div class="col-md-12">
+        <h3>@ViewBag.Title</h3>
+        <p id="responseMessage">@Model.Message</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 ">
+        <form asp-controller="Admin" asp-action="Seed" data-ajax="true" data-ajax-method="POST" data-ajax-mode="InsertBefore" data-ajax-update="#responseMessage" data-ajax-loading="loading" data-ajax-success="onReseedSuccess(data, status, xhr)" data-ajax-begin="return onBegin(status, xhr)">
+            <div class="form-horizontal marginBottom20" data-toggle="validator">
+                <div id="loading">
+                    <img src="/images/loading.gif" alt="" />
+                </div>
+                <div class="control-group" id="resetForm">
+                    <p>Use to reset test data and reseed.</p>
+                    <div class="controls margintop15">
+                        <div class="col-mdform-control-12">
+                            <input type="submit" name="button" id="SendBtn" value="Re-seed Site" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

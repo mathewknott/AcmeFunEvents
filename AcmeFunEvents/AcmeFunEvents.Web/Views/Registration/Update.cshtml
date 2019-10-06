@@ -1,0 +1,86 @@
+﻿@model AcmeFunEvents.Web.Models.RegistrationViewModels.RegistrationCreateViewModel
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = "Edit a Registration";
+    ViewBag.Section = "Registration";
+}
+@section Scripts{
+    <script>
+        var onSuccess = function (data, status, xhr) {
+            if (data === "success") {
+                window.location.href = '/registration';
+            } else if (data.success === "fail") {
+                $("#registrationForm").addClass("has-error");
+                for (var i = 0; JSON.parse(data.errorList).length > i; i += 1) {
+                    $("#responseMessage").append(JSON.parse(data.errorList)[i].Errors[0].ErrorMessage + "</br>");
+                }
+            }
+        };
+    </script>
+}
+<div class="row">
+    <div class="col-md-12">
+        <h3>@ViewBag.Title</h3>
+        <p><a href="/registration">Registration List</a></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 ">
+        <form asp-controller="Registration" asp-action="Update"
+              data-ajax="true"
+              data-ajax-method="POST"
+              data-ajax-mode="Replace"
+              data-ajax-update="#responseMessage"
+              data-ajax-loading="loading"
+              data-ajax-success="onSuccess(data, status, xhr)">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-horizontal" data-toggle="validator">
+                <div id="loading">
+                    <img src="/images/loading.gif" alt="" />
+                </div>
+                <div class="control-group" id="registrationForm">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label asp-for="FirstName" class="control-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label asp-for="LastName" class="control-label"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label asp-for="EmailAddress" class="control-label"></label>
+                            <input asp-for="EmailAddress" class="form-control" />
+                            <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label asp-for="PhoneNumber" class="control-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label asp-for="ActivityId" class="control-label"></label>
+                            <select asp-for="ActivityId" class="form-control" asp-items="Model.Activities">
+                                <option value="">-- Select --</option>
+                            </select>
+                            <span asp-validation-for="ActivityId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <label asp-for="Comments" class="control-label"></label>
+                            <textarea asp-for="Comments" class="form-control"></textarea>
+                            <span asp-validation-for="Comments" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="controls margintop15">
+                        <div class="col-mdform-control-12">
+                            <input type="submit" name="button" id="SendBtn" value="@Localizer["Submit"]" class="btn btn-primary" />
+                            <a href="./registrations" class="btn btn-primary">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

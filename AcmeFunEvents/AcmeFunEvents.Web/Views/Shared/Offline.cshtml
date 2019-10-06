@@ -1,0 +1,26 @@
+﻿@{Layout = null;}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="viewport" content="user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, width=device-width" />
+    <title>@ViewBag.Title : Acme</title>
+    <meta name="description" content="@ViewBag.Description" />
+    <link rel="shortcut icon" href="http://www.acme.ca/favicon.ico" />
+</head>
+<body>
+    <div class="container body-content">
+        <div id="page" class="fullWidth imageBG">
+            <div class="searchTitle absolute">
+                <h1 class="pageTitle hFont large marginTop20 marginRight20 marginBottom5 marginLeft20">Offline</h1>
+            </div>
+            <div class="pageNotFoundContainer floatleft width100 displayFlex justifyCenter alignCenter padTop50">
+                <p class="weight800 textMedium marginBottom20 displayBlock errorTitle">Our site is not currently available.</p>
+                <p class="weight800 textMedium marginBottom20 displayBlock">@ViewBag.Message</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
