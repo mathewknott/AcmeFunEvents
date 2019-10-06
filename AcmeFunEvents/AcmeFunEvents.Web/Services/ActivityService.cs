@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using AcmeFunEvents.Web.Data;
 using AcmeFunEvents.Web.DTO;
 using AcmeFunEvents.Web.Interfaces;
-using AcmeFunEvents.Web.Models.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -93,6 +92,22 @@ namespace AcmeFunEvents.Web.Services
             try
             {
                 _db.Activity.Add(activity);
+                result = _db.SaveChanges();
+                _logger.Log(LogLevel.Information, new EventId(2), "", null, (s, exception) => "Activity Created");
+            }
+            catch (Exception dbEx)
+            {
+                result = 0;
+                _logger.LogError(new EventId(2), dbEx, "An error occured saving activity");
+            }
+        }
+
+        /// <returns></returns>
+        public void EditActivity(Activity activity, out int result)
+        {
+            try
+            {
+                _db.Activity.Update(activity);
                 result = _db.SaveChanges();
                 _logger.Log(LogLevel.Information, new EventId(2), "", null, (s, exception) => "Activity Created");
             }

@@ -46,6 +46,10 @@ namespace AcmeFunEvents.Web.Migrations
                     b.HasKey("Id")
                         .HasName("pk_acme_activity");
 
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasName("ix_acme_activity_code");
+
                     b.ToTable("acme_activity");
                 });
 
@@ -81,6 +85,10 @@ namespace AcmeFunEvents.Web.Migrations
 
                     b.HasIndex("ActivityId")
                         .HasName("ix_acme_registration_activity_id");
+
+                    b.HasIndex("RegistrationNumber")
+                        .IsUnique()
+                        .HasName("ix_acme_registration_registration_number");
 
                     b.HasIndex("UserId")
                         .HasName("ix_acme_registration_user_id");

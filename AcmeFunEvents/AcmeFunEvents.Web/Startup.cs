@@ -115,7 +115,6 @@ namespace AcmeFunEvents.Web
             );
 
             app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
-            //app.UseStatusCodePagesWithReExecute("/Errors/Index", "?Status={0}");
 
             app.UseResponseCaching();
 

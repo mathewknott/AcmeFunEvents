@@ -15,9 +15,14 @@ namespace AcmeFunEvents.Web.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Activity>();
+            builder.Entity<Activity>()
+                .HasIndex(u => u.Code)
+                .IsUnique();
 
-            builder.Entity<Registration>();
+            builder.Entity<Registration>()
+                .HasIndex(u => u.RegistrationNumber)
+                .IsUnique();
+
 
             builder.Entity<User>()
                 .HasIndex(u => u.EmailAddress)

@@ -31,5 +31,7 @@ namespace AcmeFunEvents.Web.Interfaces
         Task<IEnumerable<Activity>> GetActivitiesAsync(out int total, int limit = 200, int offset = 0);
 
         void AddActivity(Activity activity, out int result);
+
+        void EditActivity(Activity activity, out int result);
     }
 }

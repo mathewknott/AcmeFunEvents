@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AcmeFunEvents.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191006042218_init")]
+    [Migration("20191006205622_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,10 @@ namespace AcmeFunEvents.Web.Migrations
                     b.HasKey("Id")
                         .HasName("pk_acme_activity");
 
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasName("ix_acme_activity_code");
+
                     b.ToTable("acme_activity");
                 });
 
@@ -83,6 +87,10 @@ namespace AcmeFunEvents.Web.Migrations
 
                     b.HasIndex("ActivityId")
                         .HasName("ix_acme_registration_activity_id");
+
+                    b.HasIndex("RegistrationNumber")
+                        .IsUnique()
+                        .HasName("ix_acme_registration_registration_number");
 
                     b.HasIndex("UserId")
                         .HasName("ix_acme_registration_user_id");

@@ -7,6 +7,7 @@ using AcmeFunEvents.Web.Data;
 using AcmeFunEvents.Web.DTO;
 using AcmeFunEvents.Web.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace AcmeFunEvents.Web.Services
 {
@@ -14,12 +15,20 @@ namespace AcmeFunEvents.Web.Services
     {
         private readonly ApplicationDbContext _db;
 
+        private readonly ILogger _logger;
+
         /// <param name="dataContext"></param>
-        public RegistrationService(ApplicationDbContext dataContext)
+        /// <param name="logger"></param>
+        public RegistrationService(
+            ApplicationDbContext dataContext,
+            ILogger<ActivityService> logger
+        )
         {
             _db = dataContext;
+            _logger = logger;
         }
-        
+
+
         /// <summary>
         /// Search including paging
         /// </summary>
@@ -114,5 +123,40 @@ namespace AcmeFunEvents.Web.Services
             return Task.FromResult(q.Skip(offset).Take(limit <= 0 ? 200 : limit).ToList()
                 .Select(x => new Registration { Id = x.Id, RegistrationNumber = x.RegistrationNumber, User = x.User, Comments = x.Comments, Activity = x.Activity }));
         }
+
+        /// <returns></returns>
+        public void AddRegistration(Registration registration, out int result)
+        {
+            try
+            {
+                _db.Registration.Add(registration);
+                _db.Entry(registration.User).State = EntityState.Unchanged;
+                _db.Entry(registration.Activity).State = EntityState.Unchanged;
+                result = _db.SaveChanges();
+                _logger.Log(LogLevel.Information, new EventId(2), "", null, (s, exception) => "Registration Created");
+            }
+            catch (Exception dbEx)
+            {
+                result = 0;
+                _logger.LogError(new EventId(2), dbEx, "An error occured saving activity");
+            }
+        }
+
+        /// <returns></returns>
+        public void EditRegistration(Registration registration, out int result)
+        {
+            try
+            {
+                _db.Registration.Update(registration);
+                result = _db.SaveChanges();
+                _logger.Log(LogLevel.Information, new EventId(2), "", null, (s, exception) => "Registration Created");
+            }
+            catch (Exception dbEx)
+            {
+                result = 0;
+                _logger.LogError(new EventId(2), dbEx, "An error occured saving activity");
+            }
+        }
+
     }
 }

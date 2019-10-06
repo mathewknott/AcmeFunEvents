@@ -33,6 +33,19 @@ namespace AcmeFunEvents.Web.Interfaces
 
         Task<IEnumerable<Registration>> GetRegistrationsByActivityIdAsync(out int total, Guid activityId, int limit = 200, int offset = 0);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="registration"></param>
+        /// <param name="result"></param>
+        void AddRegistration(Registration registration, out int result);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="registration"></param>
+        /// <param name="result"></param>
+        void EditRegistration(Registration registration, out int result);
 
     }
 }

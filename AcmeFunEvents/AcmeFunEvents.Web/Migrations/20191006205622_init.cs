@@ -73,9 +73,21 @@ namespace AcmeFunEvents.Web.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "ix_acme_activity_code",
+                table: "acme_activity",
+                column: "code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_acme_registration_activity_id",
                 table: "acme_registration",
                 column: "activity_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_acme_registration_registration_number",
+                table: "acme_registration",
+                column: "registration_number",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_acme_registration_user_id",
