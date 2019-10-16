@@ -70,6 +70,7 @@ namespace AcmeFunEvents.Web
             services.AddTransient<IActivityService, ActivityService>();
             services.AddTransient<IRegistrationService, RegistrationService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<INumberService, NumberService>();
 
             services.AddScoped<LookupCacheService>();
 

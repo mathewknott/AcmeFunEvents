@@ -20,6 +20,8 @@ namespace AcmeFunEvents.Test
             var services = new ServiceCollection();
             services.AddTransient<IActivityService, ActivityService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<INumberService, NumberService>();
+            
             services.AddTransient<IRegistrationService, RegistrationService>();
 
             var efServiceProvider = new ServiceCollection().AddEntityFrameworkInMemoryDatabase().BuildServiceProvider();
