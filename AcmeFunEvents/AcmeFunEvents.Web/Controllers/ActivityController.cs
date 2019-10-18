@@ -251,17 +251,15 @@ namespace AcmeFunEvents.Web.Controllers
         /// <returns></returns>
         /// 
         [HttpGet("/Activity/GetActivities", Name = "Activity_List")]
-        public async Task<IActionResult> GetActivities(string search, string sort, string order, int limit = 200, int offset = 0)
+        public async Task<JsonPagedResult<IEnumerable<Activity>>> GetActivities(string search, string sort, string order, int limit = 200, int offset = 0)
         {
             var activities = await _activityService.GetActivitiesAsync(sort, out int total, order, limit, offset, search);
 
-            var result = new JsonPagedResult<IEnumerable<Activity>>
+            return new JsonPagedResult<IEnumerable<Activity>>
             {
                 Total = total,
                 Rows = activities
             };
-
-            return Json(result);
         }
 
         /// <summary>
@@ -275,17 +273,15 @@ namespace AcmeFunEvents.Web.Controllers
         /// <returns></returns>
         /// 
         [HttpGet("/Activity/GetRegistrations", Name = "Registrations_List")]
-        public async Task<IActionResult> GetRegistrations(string search, string sort, string order, int limit = 200, int offset = 0)
+        public async Task<JsonPagedResult<IEnumerable<Registration>>> GetRegistrations(string search, string sort, string order, int limit = 200, int offset = 0)
         {
             var registrations = await _registrationService.GetRegistrationsAsync(sort, out int total, order, limit, offset, search);
 
-            var result = new JsonPagedResult<IEnumerable<Registration>>
+            return new JsonPagedResult<IEnumerable<Registration>>
             {
                 Total = total,
                 Rows = registrations
             };
-
-            return Json(result);
         }
 
         #endregion
